@@ -10,7 +10,7 @@
   author: Alexandra Mullan
   Project Five
   Part One
-  
+
 */
 
 /*
@@ -30,12 +30,16 @@
 
 /*
  	Querries:
-    1.
+    1. ?- parent(X, harry_potter), male(X).
+    2. ?- parent(X, ginevra_weasley), female(X).
+    3. ?- parent(james_potter, X), parent(lily_evans, X) , harry_potter \= X.
+    4. ?- parent(arthur_weasley, X), parent(molly_prewett, X) , ginevra_weasley \= X.
+     
  */
 /* DATABASE
 
     male(x): x is a male
-    female(x): x is a female
+    female(x): x is a femaleparent(james_potter, X), parent(lily_evans, X) , Y = harry_potter, Y \= X.
     parent(x, y): x is a parent of y
     married(x, y): x is married to y
 
@@ -178,7 +182,7 @@ parent(ginevra_weasley, lily_potter).
 
 /* Evans' family*/
 male(mr_evans).
-female(mrs.evans).
+female(mrs_evans).
 female(petunia_evans).
 female(lily_evans).
 
