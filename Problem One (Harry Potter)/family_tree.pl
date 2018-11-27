@@ -29,12 +29,16 @@
 */
 
 /*
+  Notes:
+  , means and
+  \= mean not equal
+  
  	Querries:
     1. ?- parent(X, harry_potter), male(X).
     2. ?- parent(X, ginevra_weasley), female(X).
     3. ?- parent(james_potter, X), parent(lily_evans, X) , harry_potter \= X.
     4. ?- parent(arthur_weasley, X), parent(molly_prewett, X) , ginevra_weasley \= X.
-     
+
  */
 /* DATABASE
 
