@@ -32,13 +32,48 @@
   Notes:
   , means and
   \= mean not equal
-  
+
  	Querries:
     1. ?- parent(X, harry_potter), male(X).
+
     2. ?- parent(X, ginevra_weasley), female(X).
+
     3. ?- parent(james_potter, X), parent(lily_evans, X) , harry_potter \= X.
+
     4. ?- parent(arthur_weasley, X), parent(molly_prewett, X) , ginevra_weasley \= X.
 
+    5.
+      a)
+       ?- female(A), female(C), male(B), female(D), married(B,A), parent( B, harry_potter),
+          parent(C, B), parent(D, A).
+       ?- female(A), female(B), parent(A, lily_evans), parent(B, james_potter).
+
+      b)
+       ?- female(A), female(C), male(B), female(D), female(E), female(F), married(B,A),
+          parent(B, harry_potter), parent(C, B), parent(D, A), parent(E, C), parent(F, D).
+       ?- female(A), female(B), female(C), female(D), parent(A, lily_evans),
+          parent(B, james_potter), parent(C, A), parent(D, B).
+
+      a & b)
+       ?- female(A), male(B), female(C), female(D), parent( B, harry_potter),
+          parent(A, harry_potter), married(B,A), parent(C, B), parent(D, A) ;
+          female(A), female(C), male(B), female(D), female(E), female(F), married(B,A),
+          parent(B, harry_potter), parent(C, B), parent(D, A), parent(E, C), parent(F, D).
+
+    6. ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), C \= A, parent(C, D).
+       ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), C \= A, parent(C, D)
+       ; male(M), parent(M, harry_potter), parent(N, M), parent(N, O), O \= M, parent(O, P).
+
+    7. ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), A \= C,
+       (married(C, D) ; married(D, C)) ;
+       male(A), parent(A, harry_potter), parent(B, A), parent(B, C), A \= C,
+       (married(C, D) ; married(D, C)).
+
+    8. ?- married(william_weasley, X), married(ronald_weasley, Y).
+
+    9. ?- parent(mr_potter, A), parent(mrs_potter, A), parent(A, B), parent(B, C).
+
+   10. ?- parent(septimus_weasley, A), parent(cedrella_black, A), parent(A, B), parent(B, C).
  */
 /* DATABASE
 
@@ -143,13 +178,13 @@ parent(audrey_weasley, lucy_weasley).
 
 /* George's branch of Weasley family */
 female(angelina_johnson).
-male(fred_weasley).
+male(fred_weasley_ii).
 female(roxanne_weasley).
 
 married(george_weasley, angelina_johnson).
 
-parent(george_weasley, fred_weasley).
-parent(angelina_johnson, fred_weasley).
+parent(george_weasley, fred_weasley_ii).
+parent(angelina_johnson, fred_weasley_ii).
 
 parent(george_weasley, roxanne_weasley).
 parent(angelina_johnson, roxanne_weasley).
@@ -161,22 +196,22 @@ male(hugo_weasley).
 
 married(ronald_weasley, hermione_granger).
 
-parrent(ronald_weasley, rose_weasley).
-parrent(hermione_granger, rose_weasley).
+parent(ronald_weasley, rose_weasley).
+parent(hermione_granger, rose_weasley).
 
-parrent(ronald_weasley, hugo_weasley).
-parrent(hermione_granger, hugo_weasley).
+parent(ronald_weasley, hugo_weasley).
+parent(hermione_granger, hugo_weasley).
 
 /* Ginevera's branch of Weasley family */
 male(harry_potter).
-male(james_potter).
+male(james_potter_ii).
 male(albus_potter).
 female(lily_potter).
 
 married(harry_potter, ginevra_weasley).
 
-parent(harry_potter, james_potter).
-parent(ginevra_weasley, james_potter).
+parent(harry_potter, james_potter_ii).
+parent(ginevra_weasley, james_potter_ii).
 
 parent(harry_potter, albus_potter).
 parent(ginevra_weasley, albus_potter).
