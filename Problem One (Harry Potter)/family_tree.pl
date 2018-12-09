@@ -38,40 +38,19 @@
 
     2. ?- parent(X, ginevra_weasley), female(X).
 
-    3. ?- parent(james_potter, X), parent(lily_evans, X) , harry_potter \= X.
+    3. ?- sibling(harry_potter, X).
 
-    4. ?- parent(arthur_weasley, X), parent(molly_prewett, X) , ginevra_weasley \= X.
+    4. ?- sibling(ginevra_weasley, X).
 
-    5.
-      a)
-       ?- female(A), female(C), male(B), female(D), married(B,A), parent( B, harry_potter),
-          parent(C, B), parent(D, A).
-       ?- female(A), female(B), parent(A, lily_evans), parent(B, james_potter).
+    5. ?- grandmother(harry_potter, X) ; greatgrandmother(harry_potter, Y).
 
-      b)
-       ?- female(A), female(C), male(B), female(D), female(E), female(F), married(B,A),
-          parent(B, harry_potter), parent(C, B), parent(D, A), parent(E, C), parent(F, D).
-       ?- female(A), female(B), female(C), female(D), parent(A, lily_evans),
-          parent(B, james_potter), parent(C, A), parent(D, B).
+    6. ?- cousin(harry_potter, Y).
 
-      a & b)
-       ?- female(A), male(B), female(C), female(D), parent( B, harry_potter),
-          parent(A, harry_potter), married(B,A), parent(C, B), parent(D, A) ;
-          female(A), female(C), male(B), female(D), female(E), female(F), married(B,A),
-          parent(B, harry_potter), parent(C, B), parent(D, A), parent(E, C), parent(F, D).
-
-    6. ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), C \= A, parent(C, D).
-       ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), C \= A, parent(C, D)
-       ; male(M), parent(M, harry_potter), parent(N, M), parent(N, O), O \= M, parent(O, P).
-
-    7. ?- female(A), parent(A, harry_potter), parent(B, A), parent(B, C), A \= C,
-       (married(C, D) ; married(D, C)) ;
-       male(A), parent(A, harry_potter), parent(B, A), parent(B, C), A \= C,
-       (married(C, D) ; married(D, C)).
+    7. ?- auntoruncle(harry_potter, Y,Z).
 
     8. ?- married(william_weasley, X), married(ronald_weasley, Y).
 
-    9. ?- parent(mr_potter, A), parent(mrs_potter, A), parent(A, B), parent(B, C).
+    9. ?- greatgrandchildren(mr_potter, mrs_potter, X).
 
    10. ?- parent(septimus_weasley, A), parent(cedrella_black, A), parent(A, B), parent(B, C).
  */
@@ -88,6 +67,24 @@
         female/1,
         married/2,
         parent/2.
+
+cousin(X,Y) :-
+    parent(A, X), parent(B,A), parent(B,C), C\= A, parent(C,Y).
+
+sibling(X,Y) :-
+    parent(A, X), parent(A, Y),  X \= Y.
+
+grandmother(X,Y) :-
+     parent(A, X),female(Y), parent(Y, A).
+
+greatgrandmother(X,Y) :-
+     parent(A, X),female(Y), parent(B, A), parent(Y,B).
+
+auntoruncle(X,Y,Z) :-
+    parent(A, X), parent(B, A), parent(B, Y), A \= Y,(married(Y, Z) ; married(Z, Y)).
+
+greatgrandchildren(X,Y,Z) :-
+    parent(X, A), parent(Y, A), parent(A, B), parent(B, Z).
 
 /* Root of Weasley family */
 male(septimus_weasley).
