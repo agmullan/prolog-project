@@ -1,30 +1,31 @@
-% Student exercise profile
-:- set_prolog_flag(occurs_check, error).        % disallow cyclic terms
-:- set_prolog_stack(global, limit(8 000 000)).  % limit term space (8Mb)
-:- set_prolog_stack(local,  limit(2 000 000)).  % limit environment space
-
-% Your program goes here
-
 /*
   author: Francine Dennehy
   author: Alexandra Mullan
   Project Five
+  version 2.0
   Part One
 
-*/
-
-/*
   Questions to answer:
+
   1. Who is the father of Harry Potter?
+
   2. Who is the mother of Ginny Weasley?
+
   3. Who are Harry Potter's siblings?
+
   4. Who are Ginny Weasley's siblings?
+
   5. Does Harry Potter have a grandmother? Great grandmother?
+
   6. Does Harry Potter have a cousin? Who is it?
+
   7. Who are Harry Potter's aunts and uncles?
+
   8. Who is Bill Weasley married to? Who is Ron Weasley married to?
+
   9. Who are the greatgrandchildren of Mr. and Mrs. Potter (Mr. and Mrs. Potter are James
   Potter's parents)?
+
   10. Who are the greatgrandchildren of Septimus/Cederella Weasley?
 */
 
@@ -32,6 +33,7 @@
   Notes:
   , means and
   \= mean not equal
+  ;  means or
 
  	Querries:
     1. ?- parent(X, harry_potter), male(X).
@@ -52,12 +54,13 @@
 
     9. ?- greatgrandchildren(mr_potter, mrs_potter, X).
 
-   10. ?- parent(septimus_weasley, A), parent(cedrella_black, A), parent(A, B), parent(B, C).
+   10. ?- greatgrandchildren(septimus_weasley, cedrella_black, X).
+
  */
 /* DATABASE
 
     male(x): x is a male
-    female(x): x is a femaleparent(james_potter, X), parent(lily_evans, X) , Y = harry_potter, Y \= X.
+    female(x): x is a female
     parent(x, y): x is a parent of y
     married(x, y): x is married to y
 
@@ -68,23 +71,65 @@
         married/2,
         parent/2.
 
+/* version 1.0
+ * This method finds X's cousin Y. It does this by first finding the parent of X, which is
+ * defined as A. Then it finds A's parent B. Next other children of B are found and it is
+ * expressed that A cannot be equal to the other children found of B. Finally it sees it the sibling
+ * of A has a child. If the answer is yes the cousin's name is returned. If the answer is no false is
+ * returned. This method is performed for all instances of A found.
+ */
 cousin(X,Y) :-
     parent(A, X), parent(B,A), parent(B,C), C\= A, parent(C,Y).
 
+/* version 1.0
+ * This method finds any and all siblings Y of X. It does this through first finding the parent of
+ * X and seeing if the parent A had another child that is not equal to X. If a sibling if found
+ * then the name is returned. If a sibling is not found then false is returned.
+ * This method is performed for all instances of A found.
+ */
 sibling(X,Y) :-
     parent(A, X), parent(A, Y),  X \= Y.
 
+/* version 1.0
+ * This method finds the grandmother Y of X. It does this through finding the parent A of X. Then
+ * the method says that it want the female parent of A. If a grandmother is found than the name is
+ * returned. If no grandmother is found then false is returned.
+ * This method is performed for all instances of A found.
+ */
 grandmother(X,Y) :-
      parent(A, X),female(Y), parent(Y, A).
 
+/* version 1.0
+ * This method finds the great grandmother Y of X. It does this through finding the parent A of X. Then
+ * the method finds the female parent of the grandparent found. If a great grandmother is found
+ * than the name is returned. If no great grandmother is found then false is returned.
+ * This method is performed for all instances of A found and B meaning it search the father's
+ * side and the mother's side.
+ * */
 greatgrandmother(X,Y) :-
      parent(A, X),female(Y), parent(B, A), parent(Y,B).
 
+/* version 1.0
+ * This method finds any and all aunts Y and uncles Z of X. It does this through first finding
+ * the parent A of X the finding A's siblings. If a sibling of A is found then the names of the sibling
+ * and their spouse are returned. If the aunt or uncle is single just the name of
+ * the blood relation is returned. If a sibling is not found then false is returned.
+ * This method is performed for all instances of A found.
+ */
 auntoruncle(X,Y,Z) :-
-    parent(A, X), parent(B, A), parent(B, Y), A \= Y,(married(Y, Z) ; married(Z, Y)).
+    parent(A,X), sibling(A, Y), A \= Y, ( married(Y, Z) ; married(Z, Y) ;
+                                        not(married(Y,Z)) ; not(married(Z,Y))).
 
+
+
+/* version 1.0
+ * This method finds all great grandchildren Z of X and Y. It does this through first finding
+ * the children of X and Y. Then finding A's children and finally finding B's children. If a great
+ * grandchild is found then the name is return. If no great grandchild is found then false is return.
+ */
 greatgrandchildren(X,Y,Z) :-
     parent(X, A), parent(Y, A), parent(A, B), parent(B, Z).
+
 
 /* Root of Weasley family */
 male(septimus_weasley).
