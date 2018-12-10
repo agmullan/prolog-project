@@ -1,0 +1,43 @@
+%rules
+%for specifying position
+next_to(X, Y, List) :- append(_, [X,Y|_], List); append(_, [Y,X|_], List). %the house X's position is either appended before Y or after Y in the list.
+left_of(X, Y, List) :- append(_, [X,Y|_], List). %the house is appended to the list before the previous (to the left of)
+right_of(X,Y, List) :- append(_, [Y,X|_], List). %the house is appended after the previous (to the right of)
+
+noHouses(5). %the first thing we know: there are 5 houses
+
+%solve the riddle
+%Ands all the rules together to form a list of houses in order
+houses(H) :-
+    length(H, 5), %create a list of length 5 for the houses so that we can specify position                                          
+	member(house(red,english,_,_,_), H),
+    member(house(_,spaniard,_,_,dog), H),
+    H = [house(_,norwegian,_,_,_),_,_,_,_], %specifies that the norwegian is in the 1st house; list position 1
+    right_of(house(green,_,_,_,_), house(ivory,_,_,_,_), H),
+    next_to(house(_,_,hershey,_,_), house(_,_,_,_,fox), H),
+    member(house(yellow,_,kitkat,_,_), H),
+    next_to(house(blue,_,_,_,_), house(_,norwegian,_,_,_), H),
+    member(house(_,_,smarties,_,snails), H),
+    member(house(_,_,snickers,oj,_), H),
+    member(house(_,ukrainian,_,tea,_), H),
+    member(house(_,japanese,milkyway,_,_), H),
+    member(house(green,_,_,coffee,_), H),
+    H = [_,_,house(_,_,_,milk,_),_,_], 
+    next_to(house(_,_,kitkat,_,_), house(_,_,_,_,horse), H).
+    
+%query - who has the zebra
+who_has_pet(Animal, Owner) :-
+	houses(H), 
+	member(house(_,Owner,_,_,Animal), H).
+
+%query - who has the water
+who_has_drink(Drink, Owner) :-
+	houses(H),
+	member(house(_,Owner,_,Drink,_), H).
+
+
+%query - full results
+%full_solution(L) :-
+    %L = houses(H),
+    %write('color, country, candy, drink, pet').
+    %write('~w', [world]).
